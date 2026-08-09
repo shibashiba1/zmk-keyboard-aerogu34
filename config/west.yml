@@ -35,6 +35,32 @@ manifest:
     # since its 2026-07-19 custom-settings-storage merge.
     - name: zmk-feature-custom-settings
       remote: cormoran
+    # ---- DYA Studio 2026.08.09.0 feature set (mirrors cormoran's
+    #      zmk-keyboard-dya2 reference config) ----
+    # Fast keymap loading (Studio falls back to official protocol without it)
+    - name: zmk-feature-fast-keymap
+      remote: cormoran
+    # Macro & Combo tab
+    - name: zmk-feature-runtime-combo
+      remote: cormoran
+    - name: zmk-feature-runtime-macro
+      remote: cormoran
+    # Connection tab: OS detection + default-layer selector
+    - name: zmk-feature-os-detection
+      remote: cormoran
+    # NOTE: pinned to the same revision the dya2 reference uses; its main
+    # predates the new Studio's custom-RPC surface.
+    - name: zmk-feature-default-layer
+      remote: cormoran
+      revision: codex/custom-rpc-rewrite
+    # Trackball tab: live sensor streaming
+    - name: zmk-feature-input-stream
+      remote: cormoran
+    # Troubleshooting tab: crash reasons + device info
+    - name: zmk-feature-watchdog
+      remote: cormoran
+    - name: zmk-feature-device-info
+      remote: cormoran
     # Deadzone input processor
     - name: zmk-input-processor-deadzone
       remote: prospector
