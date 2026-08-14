@@ -28,7 +28,9 @@
     x-codes = <INPUT_REL_X>;
     y-codes = <INPUT_REL_Y>;
     xy-to-scroll-enabled;
-    active-layers = <8>;  /* BIT(3) = layer 3 (Scroll) */
+    /* Hiro keymap: BIT(8) = layer 8 (SymNum)。SymNumホールド中はトラボがスクロール
+     * (LiNEA40のscroll-layers=<8>と同じ操作感)。upstreamの既定はBIT(3)=<8>。 */
+    active-layers = <256>;
     axis-snap-mode = <AXIS_SNAP_MODE_Y>;
     axis-snap-threshold = <200>;
 };
@@ -48,13 +50,14 @@
          *   deadzone  - filter sub-threshold noise
          *   xy_transform - invert both axes (sensor-mounting orientation)
          *   mouse_runtime - DYA Studio runtime config (CPI / snipe / etc)
-         *   temp_layer 4 1000ms - auto-enable Mouse layer (4) on movement,
+         *   temp_layer 11 1000ms - auto-enable Mouse layer on movement,
          *     turn back off after 1s of trackball inactivity
-         *   scroll_runtime - convert XY -> scroll on layer 3 only */
+         *     (Hiro keymap: Mouseレイヤーは11。upstream既定は4)
+         *   scroll_runtime - convert XY -> scroll on SymNum layer only */
         input-processors = <&deadzone_processor
                             &zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
                             &mouse_runtime_input_processor
-                            &zip_temp_layer 4 1000
+                            &zip_temp_layer 11 1000
                             &scroll_runtime_input_processor>;
     };
 };
