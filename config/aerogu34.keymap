@@ -1,4 +1,14 @@
-#define ZMK_POINTING_DEFAULT_SCRL_VAL 200
+// =====================================================================
+// Aerogu34 keymap — Hiro版 v1（LiNEA40からの移植）
+// 設計メモ:
+//   - レイヤー番号は必ず下のdefineで参照する（番号直書き禁止・LiNEA40の轍を踏まない）
+//   - ベース3段30キーはLiNEA40と同一。下段11キー→親指4キーへ再編
+//   - A長押しShift＋下段ホールドMod（誤爆対策チューニング済み）
+//   - トラボ: 玉を動かすとMOUSEレイヤー(11)が自動有効(AML)、
+//     SYMレイヤー(8)ホールド中はスクロール（右overlay側の2行と整合済み）
+// =====================================================================
+
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 150
 
 #include <dt-bindings/zmk/mouse.h>
 #include <behaviors.dtsi>
@@ -6,138 +16,284 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/pointing.h>
 
-// OS設定を日本語キーボードのまま使用するための変換定義
+// ---- レイヤー定義（唯一の正） ----
+#define MAC      0
+#define MAC_NAV  1
+#define WIN      2
+#define WIN_NAV  3
+#define AND      4
+#define AND_NAV  5
+#define PAD      6
+#define PAD_NAV  7
+#define SYM      8   // 記号＋テンキー（右overlayのスクロール指定と連動）
+#define FUN      9
+#define ADJ      10  // SYM+FUN同時押しで出現
+#define MSE      11  // 自動マウスレイヤー（右overlayのAML指定と連動）
 
-#define JP_DQUOTE       AT                // "
-#define JP_AMPERSAND    CARET             // &
-#define JP_QUOTE        AMPERSAND         // '
-#define JP_EQUAL        UNDER             // =
-#define JP_CARET        EQUAL             // ^
-#define JP_YEN          0x89              // ¥
-#define JP_PLUS         COLON             // +
-#define JP_TILDE        PLUS              // ~
-#define JP_PIPE         LS(0x89)          // |
-#define JP_AT           LEFT_BRACKET      // @
-#define JP_COLON        SINGLE_QUOTE      // :
-#define JP_ASTERISK     DOUBLE_QUOTES     // *
-#define JP_BACKQUOTE    LEFT_BRACE        // `
-#define JP_UNDERSCORE   LS(0x87)          // _
-#define JP_LBRACKET     RIGHT_BRACKET     // [
-#define JP_RBRACKET     BACKSLASH         // ]
-#define JP_LPAREN       ASTERISK          // (
-#define JP_RPAREN       LEFT_PARENTHESIS  // )
-#define JP_LBRACE       RIGHT_BRACE       // {
-#define JP_RBRACE       PIPE              // }
-#define JP_KANA         LANGUAGE_1        // かな
-#define JP_EISU         LANGUAGE_2        // 英数
-#define JP_HANZEN       GRAVE             // 半角/全角
+// ---- キー位置（hold-trigger用） ----
+//  0  1  2  3  4   |   5  6  7  8  9
+// 10 11 12 13 14   |  15 16 17 18 19
+// 20 21 22 23 24   |  25 26 27 28 29
+//        30 31     |  32 33
+#define KEYS_L 0 1 2 3 4 10 11 12 13 14 20 21 22 23 24
+#define KEYS_R 5 6 7 8 9 15 16 17 18 19 25 26 27 28 29
+#define THUMBS_L 30 31
+#define THUMBS_R 32 33
 
-&mt {
-    tapping-term-ms = <300>;
-    flavor = "balanced";
+// マウススクロール（Funcレイヤーのスクロールキー用・LiNEA40の設定を踏襲）
+&msc {
+    delay-ms = <3>;
+    trigger-period-ms = <3>;
+    time-to-max-speed-ms = <100>;
+    acceleration-exponent = <0>;
 };
 
+// レイヤータップ: タップ→即ホールドでキーリピート（Space連打対応）
 &lt { quick-tap-ms = <300>; };
 
 / {
+    behaviors {
+        // 左手用ホールドMod（A長押しShift・Z/X/C）
+        // 反対手（右手＋右親指）のキーだけがホールドを起動する
+        hml: homerow_mod_left {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-key-positions = <KEYS_R THUMBS_R>;
+            hold-trigger-on-release;
+            bindings = <&kp>, <&kp>;
+        };
+
+        // 右手用ホールドMod（,/./スラッシュ）
+        hmr: homerow_mod_right {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-key-positions = <KEYS_L THUMBS_L>;
+            hold-trigger-on-release;
+            bindings = <&kp>, <&kp>;
+        };
+    };
+
     combos {
         compatible = "zmk,combos";
 
+        // S+D = Tab（LiNEA40から継続）
         tab {
             bindings = <&kp TAB>;
             key-positions = <11 12>;
-            layers = <0>;
+            layers = <MAC WIN AND PAD>;
         };
 
-        stab {
-            bindings = <&kp LS(TAB)>;
-            key-positions = <12 13>;
+        // J+K = かな（旧・左親指かなキーの移設。ローマ字にjkの並びは無く安全）
+        kana {
+            bindings = <&kp LANG1>;
+            key-positions = <16 17>;
+            layers = <MAC WIN AND PAD>;
         };
 
-        btreset {
-            bindings = <&bt BT_CLR>;
-            key-positions = <0 4>;
-            layers = <3>;
+        // カンマ+ピリオド = Alt+Space（Aqua Voiceハンズフリー・存続）
+        aqua_handsfree {
+            bindings = <&kp RA(SPACE)>;
+            key-positions = <27 28>;
+            layers = <MAC WIN AND PAD>;
         };
 
-        boot {
-            bindings = <&bootloader>;
-            key-positions = <1 2 3>;
-            layers = <3>;
+        // Q+W = Esc（旧・右下Escキーの移設。ローマ字にqwの並びは無い）
+        esc {
+            bindings = <&kp ESC>;
+            key-positions = <0 1>;
+            layers = <MAC WIN AND PAD>;
+        };
+    };
+
+    macros {
+        bt_mac: bt_mac {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 0>, <&macro_wait_time 200>, <&to MAC>;
+            label = "BT_MAC";
         };
 
-        lwin {
-            bindings = <&kp LEFT_WIN>;
-            key-positions = <20 21>;
+        bt_win: bt_win {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 1>, <&macro_wait_time 200>, <&to WIN>;
+            label = "BT_WIN";
         };
 
-        lalt {
-            bindings = <&kp LEFT_ALT>;
-            key-positions = <20 22>;
+        bt_and: bt_and {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 2>, <&macro_wait_time 200>, <&to AND>;
+            label = "BT_AND";
         };
 
-        rwin {
-            bindings = <&kp RIGHT_WIN>;
-            key-positions = <29 28>;
+        bt_pad: bt_pad {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 3>, <&macro_wait_time 200>, <&to PAD>;
+            label = "BT_PAD";
         };
 
-        ralt {
-            bindings = <&kp RIGHT_ALT>;
-            key-positions = <29 27>;
+        bt_win2: bt_win2 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_SEL 4>, <&macro_wait_time 200>, <&to WIN>;
+            label = "BT_WIN2";
         };
     };
 
     keymap {
         compatible = "zmk,keymap";
 
-        default_layer {
-            display-name = "Default";
+        // ============ 0: Mac ============
+        Mac_Base {
+            display-name = "Mac";
             bindings = <
-&kp Q             &kp W  &kp E    &kp R  &kp T                                      &kp Y        &kp U  &kp I      &kp O    &kp P
-&mt LCTRL A             &kp S  &lt 3 D  &kp F  &kp G                                      &kp H        &kp J  &lt 3 K    &kp L    &mt RCTRL MINUS
-&mt LEFT_SHIFT Z  &mt LEFT_WIN X  &mt LEFT_ALT C    &kp V  &kp B                                      &kp N        &kp M  &mt RIGHT_ALT COMMA  &mt RIGHT_WIN DOT  &mt RIGHT_SHIFT SLASH
-                                          &lt 1 SPACE  &lt 3 GRAVE    &kp BACKSPACE  &lt 2 ENTER
+&kp Q           &kp W         &kp E         &kp R   &kp T          &kp Y   &kp U   &kp I            &kp O           &kp P
+&hml LSHFT A    &kp S         &kp D         &kp F   &kp G          &kp H   &kp J   &kp K            &kp L           &kp RSHIFT
+&hml LCTRL Z    &hml LGUI X   &hml LALT C   &kp V   &kp B          &kp N   &kp M   &hmr LALT COMMA  &hmr LGUI DOT   &hmr LCTRL SLASH
+                              &lt SYM LANG2  &lt MAC_NAV SPACE     &kp BACKSPACE   &lt FUN ENTER
             >;
         };
 
-        function_layer {
-            display-name = "Function";
+        // ============ 1: Mac Nav（旧Mac_Win・3段は完全移植） ============
+        Mac_Nav {
+            display-name = "MacNav";
             bindings = <
-&kp F1         &kp F2           &kp F3      &kp F4         &kp F5                               &kp F6             &kp F7    &kp F8    &kp F9     &kp F10
-&kp JP_COLON   &kp EXCLAMATION  &kp SLASH   &kp JP_LPAREN  &kp JP_LBRACKET                      &kp JP_UNDERSCORE  &mkp MB1  &kp UP    &mkp MB2   &kp F11
-&kp SEMICOLON  &kp QUESTION     &kp JP_YEN  &kp JP_RPAREN  &kp JP_RBRACKET                      &kp JP_AT          &kp LEFT  &kp DOWN  &kp RIGHT  &kp F12
-                                                            &trans           &trans    &trans     &trans
+&trans  &kp LC(LS(TAB))  &kp LC(UP)     &kp LC(TAB)    &kp LC(J)              &kp LC(LA(D))  &kp LC(LA(E))     &kp LC(LA(F))  &kp LC(LA(T))      &kp LC(LA(G))
+&trans  &kp LC(LEFT)     &kp LS(LG(T))  &kp LC(RIGHT)  &kp SPACE              &kp LC(K)      &kp LC(LA(LEFT))  &kp F11        &kp LC(LA(RIGHT))  &kp LC(LA(ENTER))
+&trans  &kp LG(LEFT)     &kp LC(DOWN)   &kp LG(RIGHT)  &kp LC(LG(SPACE))      &kp LC(SEMI)   &trans            &kp F19        &trans             &trans
+                         &trans         &trans                                &trans         &trans
             >;
         };
 
-        number_layer {
-            display-name = "Number";
+        // ============ 2: Windows ============
+        Win_Base {
+            display-name = "Win";
             bindings = <
-&kp TAB               &kp N7        &kp N8        &kp N9        &kp MINUS                          &kp RIGHT_BRACKET  &trans    &mkp MB3  &trans     &kp ESC
-&kp DOT       &kp NUMBER_4  &kp N5        &kp NUMBER_6  &kp JP_PLUS                        &kp RPAR           &mkp MB1  &kp UP    &mkp MB2   &kp COLON
-&kp NUMBER_0  &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp EQUAL                          &kp RIGHT_BRACE    &kp LEFT  &kp DOWN  &kp RIGHT  &kp SLASH
-                                                                 &kp ESC    &kp DEL    &kp LANG1  &trans
+&kp Q           &kp W         &kp E         &kp R   &kp T          &kp Y   &kp U   &kp I            &kp O           &kp P
+&hml LSHFT A    &kp S         &kp D         &kp F   &kp G          &kp H   &kp J   &kp K            &kp L           &kp RSHIFT
+&hml LCTRL Z    &hml LGUI X   &hml LALT C   &kp V   &kp B          &kp N   &kp M   &hmr LALT COMMA  &hmr LGUI DOT   &hmr LCTRL SLASH
+                              &lt SYM LANG2  &lt WIN_NAV SPACE     &kp BACKSPACE   &lt FUN ENTER
             >;
         };
 
-        scroll_layer {
-            display-name = "Scroll";
+        // ============ 3: Win Nav（旧Win_Win・3段は完全移植） ============
+        Win_Nav {
+            display-name = "WinNav";
             bindings = <
-&bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4                    &kp LC(LG(LEFT))  &kp LG(TAB)  &mkp MB3  &trans     &kp LG(LC(RIGHT))
-&studio_unlock        &trans        &trans        &trans        &trans                          &mkp MB4          &mkp MB1     &kp UP    &mkp MB2   &mkp MB5
-&trans        &trans        &trans        &trans        &trans                          &trans            &kp LEFT     &kp DOWN  &kp RIGHT  &trans
-                                                        &trans        &trans    &trans  &trans
+&trans  &kp LC(LS(TAB))   &kp LG(TAB)    &kp LC(TAB)        &kp LG(SLASH)       &trans  &trans        &kp F11            &trans         &trans
+&trans  &kp LC(LG(LEFT))  &kp LC(LS(T))  &kp LC(LG(RIGHT))  &kp SPACE           &kp F7  &kp LG(LEFT)  &kp LG(D)          &kp LG(RIGHT)  &kp LG(UP)
+&trans  &kp LA(LEFT)      &trans         &kp LA(RIGHT)      &kp LG(PERIOD)      &kp F8  &trans        &kp LS(LG(RIGHT))  &trans         &trans
+                          &trans         &trans                                 &trans  &trans
             >;
         };
 
-        mouse_layer {
-            display-name = "Mouse";
+        // ============ 4: Android ============
+        And_Base {
+            display-name = "And";
             bindings = <
-&trans  &trans  &trans  &trans  &trans                    &trans  &trans    &mkp MB3  &trans    &trans
-&trans  &trans  &trans  &trans  &trans                    &trans  &mkp MB1  &trans    &mkp MB2  &trans
-&trans  &trans  &trans  &trans  &trans                    &trans  &trans    &trans    &trans    &trans
-                                &trans  &trans    &trans  &trans
+&kp Q           &kp W         &kp E         &kp R   &kp T          &kp Y   &kp U   &kp I            &kp O           &kp P
+&hml LSHFT A    &kp S         &kp D         &kp F   &kp G          &kp H   &kp J   &kp K            &kp L           &kp RSHIFT
+&hml LCTRL Z    &hml LGUI X   &hml LALT C   &kp V   &kp B          &kp N   &kp M   &hmr LALT COMMA  &hmr LGUI DOT   &hmr LCTRL SLASH
+                              &lt SYM LANG2  &lt AND_NAV SPACE     &kp BACKSPACE   &lt FUN ENTER
             >;
+        };
+
+        // ============ 5: And Nav（旧And_Win・3段は完全移植） ============
+        And_Nav {
+            display-name = "AndNav";
+            bindings = <
+&trans  &kp LC(LS(TAB))  &kp LG(TAB)    &kp LC(TAB)    &kp LC(U)      &trans     &trans            &trans         &trans             &trans
+&trans  &kp F13          &kp LS(LC(T))  &kp F14        &kp SPACE      &kp LC(I)  &kp LG(LC(LEFT))  &kp LG(ENTER)  &kp LG(LC(RIGHT))  &kp LG(LC(UP))
+&trans  &kp LA(LEFT)     &kp F15        &kp LA(RIGHT)  &trans         &kp LC(O)  &trans            &trans         &kp F17            &kp F16
+                         &trans         &trans                        &trans     &trans
+            >;
+        };
+
+        // ============ 6: iPad ============
+        Pad_Base {
+            display-name = "Pad";
+            bindings = <
+&kp Q           &kp W         &kp E         &kp R   &kp T          &kp Y   &kp U   &kp I            &kp O           &kp P
+&hml LSHFT A    &kp S         &kp D         &kp F   &kp G          &kp H   &kp J   &kp K            &kp L           &kp RSHIFT
+&hml LCTRL Z    &hml LGUI X   &hml LALT C   &kp V   &kp B          &kp N   &kp M   &hmr LALT COMMA  &hmr LGUI DOT   &hmr LCTRL SLASH
+                              &lt SYM LANG2  &lt PAD_NAV SPACE     &kp BACKSPACE   &lt FUN ENTER
+            >;
+        };
+
+        // ============ 7: Pad Nav（旧Pad_Win・3段は完全移植） ============
+        Pad_Nav {
+            display-name = "PadNav";
+            bindings = <
+&trans  &kp LC(LS(TAB))  &kp LC(UP)     &kp LC(TAB)    &kp LC(J)              &kp LC(LA(D))  &kp LC(LA(E))     &kp LC(LA(F))  &kp LC(LA(T))      &kp LC(LA(G))
+&trans  &kp LC(LEFT)     &kp LS(LG(T))  &kp LC(RIGHT)  &kp SPACE              &kp LC(K)      &kp LC(LA(LEFT))  &kp LG(H)      &kp LC(LA(RIGHT))  &kp LC(LA(ENTER))
+&trans  &kp LG(LEFT)     &kp LC(DOWN)   &kp LG(RIGHT)  &kp LC(LG(SPACE))      &kp LC(SEMI)   &trans            &kp F19        &trans             &trans
+                         &trans         &trans                                &trans         &trans
+            >;
+        };
+
+        // ============ 8: 記号＋テンキー（旧SymNum・3段は完全移植） ============
+        // ホールド中はトラボがスクロールになる（右overlay側で指定）
+        SymNum {
+            display-name = "Sym";
+            bindings = <
+&kp LS(SEMI)  &kp LS(APOS)  &kp LS(GRAVE)  &kp LS(N1)  &kp LS(FSLH)      &kp SLASH  &kp N7  &kp N8  &kp N9  &kp MINUS
+&kp BSLH      &kp LS(N7)    &kp LS(N3)     &kp LBKT    &kp RBKT          &kp ASTRK  &kp N4  &kp N5  &kp N6  &kp LS(EQUAL)
+&kp LS(N4)    &kp LS(N2)    &kp LS(N5)     &kp LS(N9)  &kp LS(N0)        &kp N0     &kp N1  &kp N2  &kp N3  &kp COMMA
+                            &kp UNDER      &trans                        &kp DEL    &kp EQUAL
+            >;
+        };
+
+        // ============ 9: Func（3段は移植＋音量2キー追加・ENDを左下へ） ============
+        Func {
+            display-name = "Fn";
+            bindings = <
+&kp HOME    &trans           &trans           &trans            &trans            &bootloader  &kp C_VOL_DN  &kp C_VOL_UP  &trans     &kp PRINTSCREEN
+&kp LSHIFT  &trans           &msc SCRL_UP     &trans            &trans            &trans       &mkp MB1      &kp UP        &mkp MB2   &trans
+&kp END     &msc SCRL_LEFT   &msc SCRL_DOWN   &msc SCRL_RIGHT   &kp K_MUTE        &trans       &kp LEFT      &kp DOWN      &kp RIGHT  &trans
+                             &trans           &trans                              &trans       &trans
+            >;
+        };
+
+        // ============ 10: Adjust（SYM+FUN同時押し） ============
+        Adjust {
+            display-name = "Adj";
+            bindings = <
+&bt BT_SEL 0    &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4      &bootloader  &trans  &trans  &trans  &bt BT_CLR_ALL
+&bt_mac         &bt_win       &bt_and       &bt_pad       &bt_win2          &trans       &trans  &trans  &trans  &trans
+&studio_unlock  &trans        &trans        &trans        &trans            &trans       &trans  &trans  &trans  &bt BT_CLR
+                              &trans        &trans                          &trans       &trans
+            >;
+        };
+
+        // ============ 11: Mouse（トラボを動かすと自動で有効・AML） ============
+        // 右手ホームで左/右クリック、左手ホームは修飾キー（Cmd+クリック等）
+        Mouse {
+            display-name = "Mse";
+            bindings = <
+&trans     &trans     &trans    &trans    &trans      &trans    &trans    &mkp MB3  &trans    &trans
+&kp LSHFT  &kp LCTRL  &kp LGUI  &kp LALT  &trans      &trans    &mkp MB1  &trans    &mkp MB2  &trans
+&trans     &trans     &trans    &trans    &trans      &mkp MB4  &mkp MB5  &trans    &trans    &trans
+                      &trans    &trans                &trans    &trans
+            >;
+        };
+    };
+
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+
+        adjust {
+            if-layers = <SYM FUN>;
+            then-layer = <ADJ>;
         };
     };
 };
