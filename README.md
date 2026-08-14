@@ -1,6 +1,10 @@
 # Aerogu
 現在テスター向けに販売しているAeroguのファームウェア置き場
 
+## Keymap (Aerogu34)
+
+![Aerogu34 keymap](keymap-drawer/aerogu34.svg)
+
 ## ファームウェアのビルド
 
 ### GitHub Actions

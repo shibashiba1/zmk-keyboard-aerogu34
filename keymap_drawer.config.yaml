@@ -1,0 +1,11 @@
+# keymap-drawer の描画設定（README用SVGの表示を読みやすくする）
+parse_config:
+  raw_binding_map:
+    "&td_q": { t: "Q", s: "×2→Esc" }
+    "&bt_mac": "→ Mac"
+    "&bt_win": "→ Win"
+    "&bt_and": "→ And"
+    "&bt_pad": "→ Pad"
+    "&bt_win2": "→ Win2"
+    "&studio_unlock": "Studio解錠"
+    "&bootloader": "BOOT"

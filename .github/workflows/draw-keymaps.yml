@@ -1,0 +1,31 @@
+# Draw keymap diagrams using keymap-drawer ZMK user config workflow
+# LiNEA40リポジトリと同じ仕組み。pushでSVGを自動生成してコミットする
+name: Draw ZMK keymaps
+
+on:
+  workflow_dispatch:      # 手動実行用ボタン
+  push:                   # これらのファイルが変わったら自動実行
+    paths:
+      - "config/*.keymap"
+      - "config/*.dtsi"
+      - "keymap_drawer.config.yaml"
+
+jobs:
+  draw:
+    uses: caksoylar/keymap-drawer/.github/workflows/draw-zmk.yml@main
+    permissions:
+      contents: write      # 生成したSVGをコミットする権限
+
+    with:
+      # Aerogu34 の .keymap が入っている場所
+      keymap_patterns: "config/*.keymap"
+
+      # （将来カスタムしたくなったとき用。今ファイルがなくてもOK）
+      config_path: "keymap_drawer.config.yaml"
+
+      # SVGやYAMLを入れるフォルダ名（リポ直下にできる）
+      output_folder: "keymap-drawer"
+
+      # 追加オプションはとりあえず空でOK
+      parse_args: ""
+      draw_args: ""
