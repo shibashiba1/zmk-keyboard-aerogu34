@@ -1,0 +1,432 @@
+layout: {zmk_keyboard: aerogu34}
+layers:
+  Mac:
+  - {t: Q, s: ×2→Esc}
+  - W
+  - E
+  - R
+  - T
+  - Y
+  - U
+  - I
+  - O
+  - P
+  - {t: A, h: LSHFT}
+  - S
+  - D
+  - F
+  - G
+  - H
+  - J
+  - K
+  - L
+  - RSHIFT
+  - {t: Z, h: LCTRL}
+  - {t: X, h: LGUI}
+  - {t: C, h: LALT}
+  - V
+  - B
+  - N
+  - M
+  - {t: ',', h: LALT}
+  - {t: ., h: LGUI}
+  - {t: /, h: LCTRL}
+  - {t: LANG2, h: Sym}
+  - {t: SPACE, h: MacNav}
+  - BACKSPACE
+  - {t: ENTER, h: Fn}
+  MacNav:
+  - {t: ▽, type: trans}
+  - Ctl+Sft+TAB
+  - Ctl+UP
+  - Ctl+TAB
+  - Ctl+J
+  - Ctl+Alt+D
+  - Ctl+Alt+E
+  - Ctl+Alt+F
+  - Ctl+Alt+T
+  - Ctl+Alt+G
+  - {t: ▽, type: trans}
+  - Ctl+LEFT
+  - Sft+Gui+T
+  - Ctl+RIGHT
+  - SPACE
+  - Ctl+K
+  - Ctl+Alt+LEFT
+  - F11
+  - Ctl+Alt+RIGHT
+  - Ctl+Alt+ENTER
+  - {t: ▽, type: trans}
+  - Gui+LEFT
+  - Ctl+DOWN
+  - Gui+RIGHT
+  - Ctl+Gui+SPACE
+  - Ctl+;
+  - {t: ▽, type: trans}
+  - F19
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {type: held}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  Win:
+  - {t: Q, s: ×2→Esc}
+  - W
+  - E
+  - R
+  - T
+  - Y
+  - U
+  - I
+  - O
+  - P
+  - {t: A, h: LSHFT}
+  - S
+  - D
+  - F
+  - G
+  - H
+  - J
+  - K
+  - L
+  - RSHIFT
+  - {t: Z, h: LCTRL}
+  - {t: X, h: LGUI}
+  - {t: C, h: LALT}
+  - V
+  - B
+  - N
+  - M
+  - {t: ',', h: LALT}
+  - {t: ., h: LGUI}
+  - {t: /, h: LCTRL}
+  - {t: LANG2, h: Sym}
+  - {t: SPACE, h: WinNav}
+  - BACKSPACE
+  - {t: ENTER, h: Fn}
+  WinNav:
+  - {t: ▽, type: trans}
+  - Ctl+Sft+TAB
+  - Gui+TAB
+  - Ctl+TAB
+  - Gui+/
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - F11
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - Ctl+Gui+LEFT
+  - Ctl+Sft+T
+  - Ctl+Gui+RIGHT
+  - SPACE
+  - F7
+  - Gui+LEFT
+  - Gui+D
+  - Gui+RIGHT
+  - Gui+UP
+  - {t: ▽, type: trans}
+  - Alt+LEFT
+  - {t: ▽, type: trans}
+  - Alt+RIGHT
+  - Gui+.
+  - F8
+  - {t: ▽, type: trans}
+  - Sft+Gui+RIGHT
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {type: held}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  And:
+  - {t: Q, s: ×2→Esc}
+  - W
+  - E
+  - R
+  - T
+  - Y
+  - U
+  - I
+  - O
+  - P
+  - {t: A, h: LSHFT}
+  - S
+  - D
+  - F
+  - G
+  - H
+  - J
+  - K
+  - L
+  - RSHIFT
+  - {t: Z, h: LCTRL}
+  - {t: X, h: LGUI}
+  - {t: C, h: LALT}
+  - V
+  - B
+  - N
+  - M
+  - {t: ',', h: LALT}
+  - {t: ., h: LGUI}
+  - {t: /, h: LCTRL}
+  - {t: LANG2, h: Sym}
+  - {t: SPACE, h: AndNav}
+  - BACKSPACE
+  - {t: ENTER, h: Fn}
+  AndNav:
+  - {t: ▽, type: trans}
+  - Ctl+Sft+TAB
+  - Gui+TAB
+  - Ctl+TAB
+  - Ctl+U
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - F13
+  - Sft+Ctl+T
+  - F14
+  - SPACE
+  - Ctl+I
+  - Gui+Ctl+LEFT
+  - Gui+ENTER
+  - Gui+Ctl+RIGHT
+  - Gui+Ctl+UP
+  - {t: ▽, type: trans}
+  - Alt+LEFT
+  - F15
+  - Alt+RIGHT
+  - {t: ▽, type: trans}
+  - Ctl+O
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - F17
+  - F16
+  - {t: ▽, type: trans}
+  - {type: held}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  Pad:
+  - {t: Q, s: ×2→Esc}
+  - W
+  - E
+  - R
+  - T
+  - Y
+  - U
+  - I
+  - O
+  - P
+  - {t: A, h: LSHFT}
+  - S
+  - D
+  - F
+  - G
+  - H
+  - J
+  - K
+  - L
+  - RSHIFT
+  - {t: Z, h: LCTRL}
+  - {t: X, h: LGUI}
+  - {t: C, h: LALT}
+  - V
+  - B
+  - N
+  - M
+  - {t: ',', h: LALT}
+  - {t: ., h: LGUI}
+  - {t: /, h: LCTRL}
+  - {t: LANG2, h: Sym}
+  - {t: SPACE, h: PadNav}
+  - BACKSPACE
+  - {t: ENTER, h: Fn}
+  PadNav:
+  - {t: ▽, type: trans}
+  - Ctl+Sft+TAB
+  - Ctl+UP
+  - Ctl+TAB
+  - Ctl+J
+  - Ctl+Alt+D
+  - Ctl+Alt+E
+  - Ctl+Alt+F
+  - Ctl+Alt+T
+  - Ctl+Alt+G
+  - {t: ▽, type: trans}
+  - Ctl+LEFT
+  - Sft+Gui+T
+  - Ctl+RIGHT
+  - SPACE
+  - Ctl+K
+  - Ctl+Alt+LEFT
+  - Gui+H
+  - Ctl+Alt+RIGHT
+  - Ctl+Alt+ENTER
+  - {t: ▽, type: trans}
+  - Gui+LEFT
+  - Ctl+DOWN
+  - Gui+RIGHT
+  - Ctl+Gui+SPACE
+  - Ctl+;
+  - {t: ▽, type: trans}
+  - F19
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {type: held}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  Sym:
+  - Sft+;
+  - Sft+'
+  - Sft+`
+  - Sft+1
+  - Sft+/
+  - /
+  - '7'
+  - '8'
+  - '9'
+  - '-'
+  - \
+  - Sft+7
+  - Sft+3
+  - '['
+  - ']'
+  - '*'
+  - '4'
+  - '5'
+  - '6'
+  - Sft+=
+  - Sft+4
+  - Sft+2
+  - Sft+5
+  - Sft+9
+  - Sft+0
+  - '0'
+  - '1'
+  - '2'
+  - '3'
+  - ','
+  - {t: _, type: held}
+  - {t: ▽, type: trans}
+  - DEL
+  - '='
+  Fn:
+  - HOME
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - BOOT
+  - VOL DN
+  - VOL UP
+  - {t: ▽, type: trans}
+  - PRINTSCREEN
+  - LSHIFT
+  - {t: ▽, type: trans}
+  - '&msc SCRL_UP'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '&mkp MB1'
+  - UP
+  - '&mkp MB2'
+  - {t: ▽, type: trans}
+  - END
+  - '&msc SCRL_LEFT'
+  - '&msc SCRL_DOWN'
+  - '&msc SCRL_RIGHT'
+  - MUTE
+  - {t: ▽, type: trans}
+  - LEFT
+  - DOWN
+  - RIGHT
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {type: held}
+  Adj:
+  - {t: BT, h: '0'}
+  - {t: BT, h: '1'}
+  - {t: BT, h: '2'}
+  - {t: BT, h: '3'}
+  - {t: BT, h: '4'}
+  - BOOT
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - BT CLR ALL
+  - → Mac
+  - → Win
+  - → And
+  - → Pad
+  - → Win2
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - Studio解錠
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - BT CLR
+  - {type: held}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {type: held}
+  Mse:
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '&mkp MB3'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - LSHFT
+  - LCTRL
+  - LGUI
+  - LALT
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '&mkp MB1'
+  - {t: ▽, type: trans}
+  - '&mkp MB2'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - '&mkp MB4'
+  - '&mkp MB5'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+combos:
+- p: [11, 12]
+  k: TAB
+  l: [Mac, Win, And, Pad]
+- p: [16, 17]
+  k: LANG1
+  l: [Mac, Win, And, Pad]
+- p: [27, 28]
+  k: AltGr+SPACE
+  l: [Mac, Win, And, Pad]
