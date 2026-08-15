@@ -91,16 +91,16 @@ layers:
   - K
   - L
   - RSHIFT
-  - {t: Z, h: LCTRL}
-  - {t: X, h: LGUI}
+  - {t: Z, h: LGUI}
+  - {t: X, h: LCTRL}
   - {t: C, h: LALT}
   - V
   - B
   - N
   - M
   - {t: ',', h: LALT}
-  - {t: ., h: LGUI}
-  - {t: /, h: LCTRL}
+  - {t: ., h: LCTRL}
+  - {t: /, h: LGUI}
   - {t: LANG2, h: Sym}
   - {t: SPACE, h: WinNav}
   - BACKSPACE
@@ -161,16 +161,16 @@ layers:
   - K
   - L
   - RSHIFT
-  - {t: Z, h: LCTRL}
-  - {t: X, h: LGUI}
+  - {t: Z, h: LGUI}
+  - {t: X, h: LCTRL}
   - {t: C, h: LALT}
   - V
   - B
   - N
   - M
   - {t: ',', h: LALT}
-  - {t: ., h: LGUI}
-  - {t: /, h: LCTRL}
+  - {t: ., h: LCTRL}
+  - {t: /, h: LGUI}
   - {t: LANG2, h: Sym}
   - {t: SPACE, h: AndNav}
   - BACKSPACE
@@ -396,10 +396,10 @@ layers:
   - '&mkp MB3'
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - LSHFT
-  - LCTRL
-  - LGUI
-  - LALT
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - '&mkp MB1'
@@ -411,8 +411,8 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - '&mkp MB4'
-  - '&mkp MB5'
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
