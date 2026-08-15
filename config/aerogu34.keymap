@@ -1,5 +1,5 @@
 // =====================================================================
-// Aerogu34 keymap — Hiro版 v1（LiNEA40からの移植）
+// Aerogu34 keymap — Hiro版 v1.4（LiNEA40からの移植）
 // 設計メモ:
 //   - レイヤー番号は必ず下のdefineで参照する（番号直書き禁止・LiNEA40の轍を踏まない）
 //   - ベース3段30キーはLiNEA40と同一。下段11キー→親指4キーへ再編
@@ -192,13 +192,13 @@
             >;
         };
 
-        // ============ 2: Windows ============
+        // ============ 2: Windows（v1.4: GUI⇔Ctrl入替＝主修飾CtrlをMacのCmdと同位置X/.に） ============
         Win_Base {
             display-name = "Win";
             bindings = <
 &td_q           &kp W         &kp E         &kp R   &kp T          &kp Y   &kp U   &kp I            &kp O           &kp P
 &hml LSHFT A    &kp S         &kp D         &kp F   &kp G          &kp H   &kp J   &kp K            &kp L           &kp RSHIFT
-&hml_tp LCTRL Z &hml LGUI X   &hml LALT C   &kp V   &kp B          &kp N   &kp M   &hmr LALT COMMA  &hmr LGUI DOT   &hmr LCTRL SLASH
+&hml_tp LGUI Z  &hml LCTRL X  &hml LALT C   &kp V   &kp B          &kp N   &kp M   &hmr LALT COMMA  &hmr LCTRL DOT  &hmr LGUI SLASH
                               &lt SYM LANG2  &lt WIN_NAV SPACE     &kp BACKSPACE   &lt FUN ENTER
             >;
         };
@@ -214,13 +214,13 @@
             >;
         };
 
-        // ============ 4: Android ============
+        // ============ 4: Android（v1.4: Winと同じくGUI⇔Ctrl入替） ============
         And_Base {
             display-name = "And";
             bindings = <
 &td_q           &kp W         &kp E         &kp R   &kp T          &kp Y   &kp U   &kp I            &kp O           &kp P
 &hml LSHFT A    &kp S         &kp D         &kp F   &kp G          &kp H   &kp J   &kp K            &kp L           &kp RSHIFT
-&hml_tp LCTRL Z &hml LGUI X   &hml LALT C   &kp V   &kp B          &kp N   &kp M   &hmr LALT COMMA  &hmr LGUI DOT   &hmr LCTRL SLASH
+&hml_tp LGUI Z  &hml LCTRL X  &hml LALT C   &kp V   &kp B          &kp N   &kp M   &hmr LALT COMMA  &hmr LCTRL DOT  &hmr LGUI SLASH
                               &lt SYM LANG2  &lt AND_NAV SPACE     &kp BACKSPACE   &lt FUN ENTER
             >;
         };
@@ -293,13 +293,13 @@
         };
 
         // ============ 11: Mouse（トラボを動かすと自動で有効・AML） ============
-        // 右手ホームで左/右クリック、左手ホームは修飾キー（Cmd+クリック等）
+        // 最小構成（v1.4）: I=中クリック・J=左クリック・L=右クリックのみ。他は全て透過
         Mouse {
             display-name = "Mse";
             bindings = <
 &trans     &trans     &trans    &trans    &trans      &trans    &trans    &mkp MB3  &trans    &trans
-&kp LSHFT  &kp LCTRL  &kp LGUI  &kp LALT  &trans      &trans    &mkp MB1  &trans    &mkp MB2  &trans
-&trans     &trans     &trans    &trans    &trans      &mkp MB4  &mkp MB5  &trans    &trans    &trans
+&trans     &trans     &trans    &trans    &trans      &trans    &mkp MB1  &trans    &mkp MB2  &trans
+&trans     &trans     &trans    &trans    &trans      &trans    &trans    &trans    &trans    &trans
                       &trans    &trans                &trans    &trans
             >;
         };

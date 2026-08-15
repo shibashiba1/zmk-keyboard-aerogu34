@@ -50,14 +50,14 @@
          *   deadzone  - filter sub-threshold noise
          *   xy_transform - invert both axes (sensor-mounting orientation)
          *   mouse_runtime - DYA Studio runtime config (CPI / snipe / etc)
-         *   temp_layer 11 1000ms - auto-enable Mouse layer on movement,
-         *     turn back off after 1s of trackball inactivity
-         *     (Hiro keymap: Mouseレイヤーは11。upstream既定は4)
+         *   temp_layer 11 600ms - auto-enable Mouse layer on movement,
+         *     turn back off after 0.6s of trackball inactivity
+         *     (Hiro keymap: Mouseレイヤーは11・解除600ms。upstream既定は4・1000ms)
          *   scroll_runtime - convert XY -> scroll on SymNum layer only */
         input-processors = <&deadzone_processor
                             &zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
                             &mouse_runtime_input_processor
-                            &zip_temp_layer 11 1000
+                            &zip_temp_layer 11 600
                             &scroll_runtime_input_processor>;
     };
 };
