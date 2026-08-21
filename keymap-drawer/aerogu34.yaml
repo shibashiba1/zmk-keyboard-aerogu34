@@ -310,8 +310,8 @@ layers:
   - '1'
   - '2'
   - '3'
-  - ','
-  - {t: _, type: held}
+  - _
+  - {type: held}
   - {t: ▽, type: trans}
   - DEL
   - '='
