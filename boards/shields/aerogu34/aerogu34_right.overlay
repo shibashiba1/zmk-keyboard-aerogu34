@@ -4,6 +4,7 @@
 #include <input/processors/runtime-input-processor.dtsi>
 #include <dt-bindings/zmk/runtime_input_processor.h>
 #include <dt-bindings/zmk/input_transform.h>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
 
 &default_transform {
     col-offset = <5>;
@@ -54,6 +55,19 @@
 };
 
 / {
+    /* v1.8: 縦方向だけカーソル感度を底上げするY専用スケーラー
+     * （銀ボール交換で縦トラッキングがわずかに低下したことへの補正）
+     * チェーン末尾の <&zip_y_boost 6 5> が Y×(6/5)=1.2倍。
+     * 倍率の変え方: 11 10=1.1倍 / 6 5=1.2倍 / 5 4=1.25倍 / 4 3=1.33倍
+     * スクロール変換より後に置いているため、スクロール速度には影響しない */
+    zip_y_boost: zip_y_boost {
+        compatible = "zmk,input-processor-scaler";
+        #input-processor-cells = <2>;
+        type = <INPUT_EV_REL>;
+        codes = <INPUT_REL_Y>;
+        track-remainders;
+    };
+
     deadzone_processor: deadzone_processor {
         compatible = "zmk,input-processor-deadzone";
         #input-processor-cells = <0>;
@@ -77,7 +91,8 @@
                             &zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
                             &mouse_runtime_input_processor
                             &zip_temp_layer 11 400
-                            &scroll_runtime_input_processor>;
+                            &scroll_runtime_input_processor
+                            &zip_y_boost 6 5>;
     };
 };
 
