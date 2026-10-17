@@ -1,7 +1,7 @@
 layout: {zmk_keyboard: aerogu34}
 layers:
   Mac:
-  - {t: Q, s: ×2→ESC}
+  - {t: Q, s: ×2→Esc}
   - W
   - E
   - R
@@ -71,7 +71,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   Win:
-  - {t: Q, s: ×2→ESC}
+  - {t: Q, s: ×2→Esc}
   - W
   - E
   - R
@@ -141,7 +141,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   And:
-  - {t: Q, s: ×2→ESC}
+  - {t: Q, s: ×2→Esc}
   - W
   - E
   - R
@@ -211,7 +211,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   Pad:
-  - {t: Q, s: ×2→ESC}
+  - {t: Q, s: ×2→Esc}
   - W
   - E
   - R
