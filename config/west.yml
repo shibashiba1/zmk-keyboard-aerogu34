@@ -5,6 +5,10 @@
 #   新しいコミットに書き換える。
 #   2026-11-15 時点で、10-17 以降に更新があったのは zmk-feature-fast-keymap だけ
 #   （ここでは 10-17 の版に固定）。
+# v1.9.1: runtime-input-processor・fast-keymap・prospector-zmk-module の3つだけを、
+#   2026-08-25 のビルド（Build #8＝v1.8。実機で動いている版）の時点の版に戻した。
+#   理由 = v1.9（Build #11）を右手に書くと起動しなかったため。v1.8 と v1.9 で版が違う部品は
+#   この3つだけ（各 repo の履歴で照合）。ほかの行と、キーマップ・overlay・conf は v1.9 のまま。
 manifest:
   defaults:
     revision: main
@@ -43,7 +47,7 @@ manifest:
       revision: 78f86df9e6c5edaf57bef3ccbd7f360cfdf49291  # main（2026-07-06 のコミット）
     - name: zmk-module-runtime-input-processor
       remote: cormoran
-      revision: decf628d7ce5ed95b520c650824c28ea9de649c1  # main（2026-09-27 のコミット）
+      revision: 43618985f8c9d5457cc333b7ca0733f2d361911e  # v1.9.1: main の 2026-07-20 のコミット（v1.8＝Build #8 の時点の版）。旧: decf628d（2026-09-27）
     # Typed persistence backend required by runtime-input-processor
     # since its 2026-07-19 custom-settings-storage merge.
     - name: zmk-feature-custom-settings
@@ -54,7 +58,7 @@ manifest:
     # Fast keymap loading (Studio falls back to official protocol without it)
     - name: zmk-feature-fast-keymap
       remote: cormoran
-      revision: 575411dccf20992e6f86a8b7de44ec38345ccb09  # main（2026-10-15 のコミット）
+      revision: 8dac76de0ba38588ba39ca498910e24f8332bc6b  # v1.9.1: main の 2026-07-18 のコミット（v1.8＝Build #8 の時点の版）。旧: 575411dc（2026-10-15）
     # Macro & Combo tab
     - name: zmk-feature-runtime-combo
       remote: cormoran
@@ -89,7 +93,7 @@ manifest:
     # Prospector
     - name: prospector-zmk-module
       remote: prospector
-      revision: 72a71aeea816eb0f86ffc5b108b267076ce5f0af  # main（2026-09-01 のコミット）
+      revision: 747acd4d815c67b6ec4b0221c67bb34cb7b3a218  # v1.9.1: main の 2026-08-09 のコミット（v1.8＝Build #8 の時点の版）。旧: 72a71aee（2026-09-01）
       path: modules/prospector-zmk-module
   self:
     path: config
