@@ -75,6 +75,29 @@
         timeout-ms = <300>;
     };
 
+    /* v1.9: Jumpモード用のスクロール縮小（jscroll）
+     * iPadのJump Desktop経由では、母艦Macのスクロールが約10倍速くなる
+     * （実測: 通常 0.48x に対し、Jump経由は 0.05x で快適）。
+     * rscroll（XY→スクロール変換）の直後に置き、スクロールの信号だけを 1/10 にする。
+     * active-layers = BIT(12) = keymapのJUMP層が有効な間だけ働く。
+     * それ以外（Mac直結・iPad単体・Win・Android）は素通しで、rscrollの値のまま。
+     * 倍率は DYA Studio のトラックボール設定で jscroll を選んで変えられる。
+     * track-remainders で端数を持ち越すため、細かい動きも合計では取りこぼさない。 */
+    jump_scroll_runtime_input_processor: jump_scroll_runtime_input_processor {
+        compatible = "zmk,input-processor-runtime";
+        processor-label = "jscroll";
+        type = <INPUT_EV_REL>;
+        x-codes = <INPUT_REL_HWHEEL>;
+        y-codes = <INPUT_REL_WHEEL>;
+        scale-multiplier = <1>;
+        scale-divisor = <10>;
+        rotation-degrees = <0>;
+        track-remainders;
+        active-layers = <4096>;
+
+        #input-processor-cells = <0>;
+    };
+
     trackball_listener: trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
@@ -86,12 +109,14 @@
          *     turn back off 0.4s after the last trackball motion OR click
          *     (v1.6: クリック延命は&mkp_input_listener側の同プロセッサ適用で実現。
          *      upstream既定は 4 1000)
-         *   scroll_runtime - convert XY -> scroll on SymNum layer only */
+         *   scroll_runtime - convert XY -> scroll on SymNum layer only
+         *   jump_scroll_runtime - v1.9: scale scroll to 1/10 while the Jump layer is on */
         input-processors = <&deadzone_processor
                             &zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)
                             &mouse_runtime_input_processor
                             &zip_temp_layer 11 400
                             &scroll_runtime_input_processor
+                            &jump_scroll_runtime_input_processor
                             &zip_y_boost 6 5>;
     };
 };

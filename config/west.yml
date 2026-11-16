@@ -1,3 +1,10 @@
+# v1.9: 全プロジェクトの revision（版）を固定した。
+#   固定した版 = 2026-10-17 のビルド（GitHub Actions・成功）のとき、各ブランチの先端だったコミット。
+#   目的 = 後からキーマップだけを直したり戻したりするとき、ほかの部品が変わらないようにする。
+#   部品を新しくしたいときは、該当行の revision を、行末のコメントにあるブランチ名か
+#   新しいコミットに書き換える。
+#   2026-11-15 時点で、10-17 以降に更新があったのは zmk-feature-fast-keymap だけ
+#   （ここでは 10-17 の版に固定）。
 manifest:
   defaults:
     revision: main
@@ -14,60 +21,75 @@ manifest:
     # ZMK: cormoran fork, main+dya = ZMK main (Zephyr 4.1) base with DYA Studio RPC
     - name: zmk
       remote: cormoran
-      revision: main+dya
+      revision: e5c9b6915b56801193e359dd9bad4a167ce0d1b8  # main+dya（2026-07-25 のコミット）
       import: app/west.yml
     # Trackball driver
     - name: zmk-driver-paw3222
       remote: sekigon-gonnoc
+      revision: df652881be2520bde4f64ab6ca35e4c5708f4f9b  # main（2026-02-22 のコミット）
     # RGB LED widget (main supports Zephyr 4.1 / xiao_ble naming)
     - name: zmk-rgbled-widget
       remote: caksoylar
+      revision: e6b467792a1dabef8cfa5c9fd26bfefc9c16662b  # main（2026-07-09 のコミット）
     # DYA Studio modules (main = v4-compatible)
     - name: zmk-module-ble-management
       remote: cormoran
+      revision: 57738cc4fc6ba80e82a7ac57741a0339cb186cd4  # main（2026-07-05 のコミット）
     - name: zmk-module-battery-history
       remote: cormoran
+      revision: 307755dd2ad4d320e14de162e8e5ef018f29d929  # main（2026-02-24 のコミット）
     - name: zmk-module-settings-rpc
       remote: cormoran
+      revision: 78f86df9e6c5edaf57bef3ccbd7f360cfdf49291  # main（2026-07-06 のコミット）
     - name: zmk-module-runtime-input-processor
       remote: cormoran
+      revision: decf628d7ce5ed95b520c650824c28ea9de649c1  # main（2026-09-27 のコミット）
     # Typed persistence backend required by runtime-input-processor
     # since its 2026-07-19 custom-settings-storage merge.
     - name: zmk-feature-custom-settings
       remote: cormoran
+      revision: c6a7fef3a3be3d3ace5de9a4b0628c6418cd1f3f  # main（2026-07-22 のコミット）
     # ---- DYA Studio 2026.08.09.0 feature set (mirrors cormoran's
     #      zmk-keyboard-dya2 reference config) ----
     # Fast keymap loading (Studio falls back to official protocol without it)
     - name: zmk-feature-fast-keymap
       remote: cormoran
+      revision: 575411dccf20992e6f86a8b7de44ec38345ccb09  # main（2026-10-15 のコミット）
     # Macro & Combo tab
     - name: zmk-feature-runtime-combo
       remote: cormoran
+      revision: d9490e7b5d41c516221d131241009e81740efcee  # main（2026-07-18 のコミット）
     - name: zmk-feature-runtime-macro
       remote: cormoran
+      revision: 38530962eb7061b60efcb98e84585cfb1f0cb6de  # main（2026-07-18 のコミット）
     # Connection tab: OS detection + default-layer selector
     - name: zmk-feature-os-detection
       remote: cormoran
+      revision: 3052679f645b8fc1997275c2eaa6b86bdd55ca01  # main（2026-07-19 のコミット）
     # NOTE: pinned to the same revision the dya2 reference uses; its main
     # predates the new Studio's custom-RPC surface.
     - name: zmk-feature-default-layer
       remote: cormoran
-      revision: codex/custom-rpc-rewrite
+      revision: b25cb5b324da2d9bbc84e1877c775f5b2b7c6845  # codex/custom-rpc-rewrite（2026-07-15 のコミット）
     # Trackball tab: live sensor streaming
     - name: zmk-feature-input-stream
       remote: cormoran
+      revision: aeb015908a42a7615ccdccc7feb3a10d23132a71  # main（2026-07-05 のコミット）
     # Troubleshooting tab: crash reasons + device info
     - name: zmk-feature-watchdog
       remote: cormoran
+      revision: 84ad14c6c3645dc40b23f45d08ab45418655f912  # main（2026-07-18 のコミット）
     - name: zmk-feature-device-info
       remote: cormoran
+      revision: 8cedd2dd9f04e19ea5a17b94914dd47a09d8db11  # main（2026-07-18 のコミット）
     # Deadzone input processor
     - name: zmk-input-processor-deadzone
       remote: prospector
+      revision: 7ae1bcb0d367ad00b7fa8836cf9a9b197d88e555  # main（2026-03-04 のコミット）
     # Prospector
     - name: prospector-zmk-module
       remote: prospector
-      revision: main
+      revision: 72a71aeea816eb0f86ffc5b108b267076ce5f0af  # main（2026-09-01 のコミット）
       path: modules/prospector-zmk-module
   self:
     path: config

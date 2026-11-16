@@ -6,6 +6,7 @@ parse_config:
     "&bt_win": "→ Win"
     "&bt_and": "→ And"
     "&bt_pad": "→ Pad"
-    "&bt_win2": "→ Win2"
+    "&bt_pad2": "→ Pad2"
+    "&globe_d": "音声入力"
     "&studio_unlock": "Studio解錠"
     "&bootloader": "BOOT"
