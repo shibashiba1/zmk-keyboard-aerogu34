@@ -25,15 +25,26 @@
 &board_cdc_acm_uart { status = "disabled"; };
 
 &scroll_runtime_input_processor {
-    processor-label = "rscroll";
+    /* v1.9.2: 名前を rscroll から rscrl2 に変えた。
+     * 実機には DYA Studio で保存した rscroll の値（倍率 0.05x）が残っていて、
+     * 右手の USB の接触不良で DYA Studio につなげず、戻せない。名前を変えると
+     * 保存済みの値は使われず、下に書いた値が使われる（DYA Studio からは rscrl2 として
+     * 引き続き調整できる）。下の値は 2026-11-15 の DYA Studio の画面（変更前）と同じ:
+     *   倍率 0.48x（= 12/25）・軸スナップ Y・しきい値 15・250ms・Y軸を反転・XY→スクロール。
+     * Jumpモード中は、この後ろの jscroll がさらに 1/10 にする（0.48 x 0.1 = 約 0.05x）。 */
+    processor-label = "rscrl2";
     x-codes = <INPUT_REL_X>;
     y-codes = <INPUT_REL_Y>;
     xy-to-scroll-enabled;
     /* Hiro keymap: BIT(8) = layer 8 (SymNum)。SymNumホールド中はトラボがスクロール
      * (LiNEA40のscroll-layers=<8>と同じ操作感)。upstreamの既定はBIT(3)=<8>。 */
     active-layers = <256>;
+    scale-multiplier = <12>;
+    scale-divisor = <25>;
+    y-invert;
     axis-snap-mode = <AXIS_SNAP_MODE_Y>;
-    axis-snap-threshold = <200>;
+    axis-snap-threshold = <15>;
+    axis-snap-timeout-ms = <250>;
 };
 
 /* v1.6: AML（temp layer）の調整

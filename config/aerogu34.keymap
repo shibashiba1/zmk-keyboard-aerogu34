@@ -10,8 +10,10 @@
 //     PadNavのQ（Space長押し＋Q）で入切。入っている間は右手のLEDが緑。
 //     iPadが横取りするキーを「Ctrl+Option+英字」の合図に置き換え、母艦のBetterTouchToolが
 //     受けて動作する（Macのショートカット・Mac層・既存の層0〜11は変えない）。
-//     合図: X=Mission Control / A=英数 / H=かな / S=スクリーンショット / L=Alfred
+//     合図: X=Mission Control / A=英数 / H=かな / S=スクリーンショット / L=Alfred / Y=Tab（v1.9.2）
 //     （Mは使わない: 母艦のAqua Voiceの「会議の録音」= Option+M と重なるため）
+//   - v1.9.3 iPadのウインドウ操作: PadNavの I/J/L/,/; = 上/左/右/下/フルスクリーン（地球儀を使うiPadの
+//     ショートカット）。Jumpモード中は、同じ位置を母艦用のキーのまま残す（Jump Nav層）。
 // =====================================================================
 
 #define ZMK_POINTING_DEFAULT_SCRL_VAL 150
@@ -126,16 +128,37 @@
             bindings = <&lt PAD_NAV SPACE>, <&kp LC(LA(L))>;
             mods = <(MOD_LGUI|MOD_RGUI)>;
         };
+
+        // Jumpモード用のTab（v1.9.2）
+        // iPadにつないだキーボードの素のTabは、Jump Desktop経由では母艦で効かなかった
+        // （2026-11-16 の実機。原因は未確定）。Jumpモード中のS+Dは、Tabの合図（Ctrl+Option+Y）を送り、
+        // 母艦のBetterTouchToolがTabに変換する。Shiftを押していれば Ctrl+Option+Shift+Y（＝Shift+Tab用）。
+        // Option・Ctrl・Cmd のどれかを押している間は、今までどおりTabを送る（押している修飾キーは残す）
+        // ＝Option+Tab（Jump Desktopが母艦のアプリ切替に変換する）・Ctrl+Tab・Cmd+Tab（iPadのアプリ切替）はそのまま。
+        jump_tab: jump_tab {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp LC(LA(Y))>, <&kp TAB>;
+            mods = <(MOD_LALT|MOD_RALT|MOD_LCTL|MOD_RCTL|MOD_LGUI|MOD_RGUI)>;
+            keep-mods = <(MOD_LALT|MOD_RALT|MOD_LCTL|MOD_RCTL|MOD_LGUI|MOD_RGUI)>;
+        };
     };
 
     combos {
         compatible = "zmk,combos";
 
-        // S+D = Tab（LiNEA40から継続。v1.9: Jumpモードでも有効）
+        // S+D = Tab（LiNEA40から継続）
         tab {
             bindings = <&kp TAB>;
             key-positions = <11 12>;
-            layers = <MAC WIN AND PAD JUMP>;
+            layers = <MAC WIN AND PAD>;
+        };
+
+        // S+D = Tab（Jumpモード用・v1.9.2）: Tabの合図（Ctrl+Option+Y）。Option・Ctrl・Cmd併用時は素のTab
+        tab_jump {
+            bindings = <&jump_tab>;
+            key-positions = <11 12>;
+            layers = <JUMP>;
         };
 
         // J+K = かな（旧・左親指かなキーの移設。ローマ字にjkの並びは無く安全）
@@ -211,6 +234,44 @@
             #binding-cells = <0>;
             bindings = <&macro_press &kp GLOBE>, <&macro_tap &kp D>, <&macro_release &kp GLOBE>;
             label = "GLOBE_D";
+        };
+
+        // iPadのウインドウ操作（v1.9.3）: iPadのメニュー「ウインドウ」に出ているショートカットを送る。
+        // 地球儀を押したまま（左右上下はCtrlも押したまま）キーを1回押す。作りは globe_d と同じ
+        // フルスクリーンにする = 地球儀+F
+        pad_full: pad_full {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press &kp GLOBE>, <&macro_tap &kp F>, <&macro_release &kp GLOBE>;
+            label = "PAD_FULL";
+        };
+        // 左（2分割）= Ctrl+地球儀+←
+        pad_left: pad_left {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press &kp LCTRL &kp GLOBE>, <&macro_tap &kp LEFT>, <&macro_release &kp GLOBE &kp LCTRL>;
+            label = "PAD_LEFT";
+        };
+        // 右（2分割）= Ctrl+地球儀+→
+        pad_right: pad_right {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press &kp LCTRL &kp GLOBE>, <&macro_tap &kp RIGHT>, <&macro_release &kp GLOBE &kp LCTRL>;
+            label = "PAD_RIGHT";
+        };
+        // 上（2分割）= Ctrl+地球儀+↑
+        pad_up: pad_up {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press &kp LCTRL &kp GLOBE>, <&macro_tap &kp UP>, <&macro_release &kp GLOBE &kp LCTRL>;
+            label = "PAD_UP";
+        };
+        // 下（2分割）= Ctrl+地球儀+↓
+        pad_down: pad_down {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_press &kp LCTRL &kp GLOBE>, <&macro_tap &kp DOWN>, <&macro_release &kp GLOBE &kp LCTRL>;
+            label = "PAD_DOWN";
         };
     };
 
@@ -296,12 +357,15 @@
 
         // ============ 7: Pad Nav（旧Pad_Win・3段は完全移植） ============
         // v1.9: 左上（Qの位置）= Jumpモードの入切
+        // v1.9.3: 右手の I/J/L/,/; = iPadのウインドウ操作（上・左・右・下・フルスクリーン）。
+        //         Macのナビ層の「左半分・右半分・最大化」と同じ位置にそろえた。
+        //         以前ここにあった母艦用のキーは、Jump Nav層（13）に移した
         Pad_Nav {
             display-name = "PadNav";
             bindings = <
-&tog JUMP  &kp LC(LS(TAB))  &kp LC(UP)     &kp LC(TAB)    &kp LC(J)              &kp LC(LA(D))  &kp LC(LA(E))     &kp LC(LA(F))  &kp LC(LA(T))      &kp LC(LA(G))
-&trans  &kp LC(LEFT)     &kp LS(LG(T))  &kp LC(RIGHT)  &kp SPACE              &kp LC(K)      &kp LC(LA(LEFT))  &kp LG(H)      &kp LC(LA(RIGHT))  &kp LC(LA(ENTER))
-&trans  &kp LG(LEFT)     &kp LC(DOWN)   &kp LG(RIGHT)  &kp LC(LG(SPACE))      &kp LC(SEMI)   &trans            &kp F19        &trans             &trans
+&tog JUMP  &kp LC(LS(TAB))  &kp LC(UP)     &kp LC(TAB)    &kp LC(J)              &kp LC(LA(D))  &kp LC(LA(E))     &pad_up        &kp LC(LA(T))      &kp LC(LA(G))
+&trans  &kp LC(LEFT)     &kp LS(LG(T))  &kp LC(RIGHT)  &kp SPACE              &kp LC(K)      &pad_left         &kp LG(H)      &pad_right         &pad_full
+&trans  &kp LG(LEFT)     &kp LC(DOWN)   &kp LG(RIGHT)  &kp LC(LG(SPACE))      &kp LC(SEMI)   &trans            &pad_down      &trans             &trans
                          &trans         &trans                                &trans         &trans
             >;
         };
@@ -368,24 +432,30 @@
 
         // ============ 13: Jump Nav（JUMP＋PAD_NAVで自動） ============
         // E = Mission Controlの合図（Ctrl+Option+X）。iPadが Ctrl+↑ を横取りするため
+        // v1.9.3: 右手の I/J/L/,/; = 母艦用のキー（Ctrl+Option+F/←/→/Enter・F19）。
+        //         v1.9.2まではPad Navにあったもの。Pad Nav側がiPadのウインドウ操作になったので、
+        //         ここに同じキーを置いて、Jumpモード中の動きを変えないようにした
         Jump_Nav {
             display-name = "JumpNav";
             bindings = <
-&trans  &trans  &kp LC(LA(X))  &trans  &trans      &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans         &trans  &trans      &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans         &trans  &trans      &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &kp LC(LA(X))  &trans  &trans      &trans  &trans            &kp LC(LA(F))  &trans             &trans
+&trans  &trans  &trans         &trans  &trans      &trans  &kp LC(LA(LEFT))  &trans         &kp LC(LA(RIGHT))  &kp LC(LA(ENTER))
+&trans  &trans  &trans         &trans  &trans      &trans  &trans            &kp F19        &trans             &trans
                 &trans  &trans      &trans  &trans
             >;
         };
 
-        // ============ 14: Jump Sym（JUMP＋SYMで自動・全キー透過） ============
-        // Sym中の最上位層をここにして、Jump用コンボを止めるためだけの層
+        // ============ 14: Jump Sym（JUMP＋SYMで自動） ============
+        // Sym中の最上位層をここにして、Jump用コンボを止めるための層
+        // v1.9.3: 右手の I/J/L/;/, に、Sym層（8）と同じキーを置いた（8・4・6・+・2）。
+        //         Jump Nav層（13）に母艦用のキーを置いたので、ナビとSymを同時に押したときに
+        //         そちらが勝たないようにするため。Sym層のこの5か所を変えるときは、ここも同じにする
         Jump_Sym {
             display-name = "JumpSym";
             bindings = <
-&trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans      &trans  &trans   &kp N8  &trans   &trans
+&trans  &trans  &trans  &trans  &trans      &trans  &kp N4   &trans  &kp N6   &kp LS(EQUAL)
+&trans  &trans  &trans  &trans  &trans      &trans  &trans   &kp N2  &trans   &trans
                 &trans  &trans      &trans  &trans
             >;
         };
@@ -393,23 +463,29 @@
         // ============ 15: Jump Fn（JUMP＋FUNで自動） ============
         // P = スクリーンショット（範囲）の合図（Ctrl+Option+S）。PRINTSCREENがJump経由で届かないため
         // ※Jumpモード中は Adjust＋P（BT CLR ALL）よりこちらが勝つ
+        // v1.9.3: 右手の I/J/L/, に、Fn層（9）と同じキーを置いた（音量＋・左クリック・右クリック・↓）。
+        //         理由はJump Symと同じ（ナビとFnを同時に押したときに、Jump Nav層が勝たないようにする）。
+        //         Fn層のこの4か所を変えるときは、ここも同じにする
         Jump_Fn {
             display-name = "JumpFn";
             bindings = <
-&trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &kp LC(LA(S))
-&trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans      &trans  &trans    &kp C_VOL_UP  &trans    &kp LC(LA(S))
+&trans  &trans  &trans  &trans  &trans      &trans  &mkp MB1  &trans        &mkp MB2  &trans
+&trans  &trans  &trans  &trans  &trans      &trans  &trans    &kp DOWN      &trans    &trans
                 &trans  &trans      &trans  &trans
             >;
         };
 
-        // ============ 16: Jump Mouse（JUMP＋MSEで自動・全キー透過） ============
-        // 玉を動かしている間の最上位層をここにして、Jump用コンボを止めるためだけの層
+        // ============ 16: Jump Mouse（JUMP＋MSEで自動） ============
+        // 玉を動かしている間の最上位層をここにして、Jump用コンボを止めるための層
+        // v1.9.3: 右手の I/J/L に、Mouse層（11）と同じクリックを置いた（中・左・右）。
+        //         理由はJump Symと同じ（ナビを押したまま玉を動かしたときに、Jump Nav層が勝たないようにする）。
+        //         Mouse層のクリックの位置を変えるときは、ここも同じにする
         Jump_Mse {
             display-name = "JumpMse";
             bindings = <
-&trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans      &trans  &trans    &mkp MB3  &trans    &trans
+&trans  &trans  &trans  &trans  &trans      &trans  &mkp MB1  &trans    &mkp MB2  &trans
 &trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans
                 &trans  &trans      &trans  &trans
             >;
