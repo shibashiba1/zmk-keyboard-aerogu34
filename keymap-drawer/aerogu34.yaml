@@ -253,7 +253,7 @@ layers:
   - Ctl+J
   - Ctl+Alt+D
   - Ctl+Alt+E
-  - Ctl+Alt+F
+  - 窓 上
   - Ctl+Alt+T
   - Ctl+Alt+G
   - {t: ▽, type: trans}
@@ -262,10 +262,10 @@ layers:
   - Ctl+RIGHT
   - SPACE
   - Ctl+K
-  - Ctl+Alt+LEFT
+  - 窓 左
   - Gui+H
-  - Ctl+Alt+RIGHT
-  - Ctl+Alt+ENTER
+  - 窓 右
+  - 全画面
   - {t: ▽, type: trans}
   - Gui+LEFT
   - Ctl+DOWN
@@ -273,7 +273,7 @@ layers:
   - Ctl+Gui+SPACE
   - Ctl+;
   - {t: ▽, type: trans}
-  - F19
+  - 窓 下
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -463,6 +463,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - Ctl+Alt+F
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -471,6 +472,10 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - Ctl+Alt+LEFT
+  - {t: ▽, type: trans}
+  - Ctl+Alt+RIGHT
+  - Ctl+Alt+ENTER
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -478,12 +483,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - F19
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -498,6 +498,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - '8'
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -506,6 +507,10 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - '4'
+  - {t: ▽, type: trans}
+  - '6'
+  - Sft+=
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -513,12 +518,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - '2'
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {type: held}
@@ -533,7 +533,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - VOL UP
   - {t: ▽, type: trans}
   - Ctl+Alt+S
   - {t: ▽, type: trans}
@@ -542,6 +542,9 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - '&mkp MB1'
+  - {t: ▽, type: trans}
+  - '&mkp MB2'
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -550,10 +553,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - DOWN
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -568,6 +568,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - '&mkp MB3'
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -576,10 +577,9 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
+  - '&mkp MB1'
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - '&mkp MB2'
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -598,7 +598,10 @@ layers:
 combos:
 - p: [11, 12]
   k: TAB
-  l: [Mac, Win, And, Pad, Jump]
+  l: [Mac, Win, And, Pad]
+- p: [11, 12]
+  k: Tab
+  l: [Jump]
 - p: [16, 17]
   k: LANG1
   l: [Mac, Win, And, Pad]
