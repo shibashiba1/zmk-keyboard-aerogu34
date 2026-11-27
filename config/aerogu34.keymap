@@ -14,6 +14,10 @@
 //     （Mは使わない: 母艦のAqua Voiceの「会議の録音」= Option+M と重なるため）
 //   - v1.9.3 iPadのウインドウ操作: PadNavの I/J/L/,/; = 上/左/右/下/フルスクリーン（地球儀を使うiPadの
 //     ショートカット）。Jumpモード中は、同じ位置を母艦用のキーのまま残す（Jump Nav層）。
+//   - v1.9.4 Jumpモードの手直し: Alfredの合図は、Cmdを先に離してから一定の長さで送る（&jump_alfred）
+//     音声入力: Jumpモードの ,+. = iPadの言語を切り替えてからiPad純正の音声入力（&jump_dict）／
+//     .+/ = iPadのキーボードの言語の切り替え（Ctrl+Space）。前提: iPadのJump Desktopの設定
+//     「Switch Languages On」が This iPad（Jumpの中のCtrl+SpaceがiPadの言語を切り替える）
 // =====================================================================
 
 #define ZMK_POINTING_DEFAULT_SCRL_VAL 150
@@ -122,10 +126,11 @@
         // Cmd(GUI)が押されている間だけ、Alfred用の合図（Ctrl+Option+L）を送る。
         // iPadが Cmd+Space を自分の検索として横取りするため。合図はCmdを外して送られる。
         // Cmdなしのときは通常どおり Space（長押しでPadNav）。
+        // v1.9.4: 合図の出し方を &jump_alfred（マクロ）に変えた。Cmdを先に離してから、合図を一定の長さで送る
         jump_space: jump_space {
             compatible = "zmk,behavior-mod-morph";
             #binding-cells = <0>;
-            bindings = <&lt PAD_NAV SPACE>, <&kp LC(LA(L))>;
+            bindings = <&lt PAD_NAV SPACE>, <&jump_alfred>;
             mods = <(MOD_LGUI|MOD_RGUI)>;
         };
 
@@ -183,11 +188,30 @@
             layers = <MAC WIN AND>;
         };
 
-        // カンマ+ピリオド = 地球儀+D（iPad純正の音声入力・v1.9）: Pad層とJumpモード
+        // カンマ+ピリオド = 地球儀+D（iPad純正の音声入力・v1.9）: Pad層
+        // （v1.9.4: Jumpモードは下の dictation_jump に分けた）
         dictation_ipad {
             bindings = <&globe_d>;
             key-positions = <27 28>;
-            layers = <PAD JUMP>;
+            layers = <PAD>;
+        };
+
+        // カンマ+ピリオド = 音声入力（Jumpモード用・v1.9.4）
+        // iPadのキーボードの言語を切り替えてから、iPad純正の音声入力を始める（&jump_dict）。
+        // Jump Desktopの中では、iPadが英語のときは母艦で変換でき、日本語のときは音声入力が
+        // 日本語を聞き取る（本人の実機 2026-11-26）。ふだんは英語なので、押すと日本語になって始まる
+        dictation_jump {
+            bindings = <&jump_dict>;
+            key-positions = <27 28>;
+            layers = <JUMP>;
+        };
+
+        // ピリオド+スラッシュ = iPadのキーボードの言語の切り替え（Jumpモード用・v1.9.4）: Ctrl+Space を1回（&ipad_lang）
+        // 音声入力の後に英語へ戻すとき・文字を打って左下にiPadの変換候補（黒い帯）が出たときに押す
+        ipad_lang_jump {
+            bindings = <&ipad_lang>;
+            key-positions = <28 29>;
+            layers = <JUMP>;
         };
     };
 
@@ -272,6 +296,43 @@
             #binding-cells = <0>;
             bindings = <&macro_press &kp LCTRL &kp GLOBE>, <&macro_tap &kp DOWN>, <&macro_release &kp GLOBE &kp LCTRL>;
             label = "PAD_DOWN";
+        };
+
+        // JumpモードのAlfred用（v1.9.4）: Cmdを離す → 0.05秒待つ → 合図（Ctrl+Option+L）を0.1秒出す。
+        // v1.9.3までは「Cmdを隠すのと合図を出すのが同じ瞬間・合図の長さはSpaceを押している間」で、
+        // iPad→Jump Desktop→母艦の経路で、できたりできなかったりした（本人の実機 2026-11-25）。
+        // このキーボードのCmdはLGUIだけ（X と . の長押し）。Cmdのキーを押したままでも、ここでCmdは
+        // 離した扱いになる（続けてもう一度Alfredを出すには、Cmdを押し直す）
+        jump_alfred: jump_alfred {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <50>;
+            tap-ms = <100>;
+            bindings = <&macro_release &kp LGUI>, <&macro_tap &kp LC(LA(L))>;
+            label = "JUMP_ALFRED";
+        };
+
+        // Jumpモードの音声入力（v1.9.4）: Ctrl+Space を0.06秒（iPadの言語を切り替える）→ 0.6秒待つ →
+        // 地球儀を押したまま D（iPad純正の音声入力。ここの長さは globe_d と同じ）。
+        // iPadが英語の状態で押す前提（日本語になって始まる）。
+        // iPadが日本語の状態で押すと、英語になってから始まってしまう（そのときは .+/ で言語を直す）
+        jump_dict: jump_dict {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap_time 60>, <&macro_wait_time 600>, <&macro_tap &kp LC(SPACE)>,
+                       <&macro_tap_time 30>, <&macro_wait_time 15>, <&macro_press &kp GLOBE>, <&macro_tap &kp D>, <&macro_release &kp GLOBE>;
+            label = "JUMP_DICT";
+        };
+
+        // iPadのキーボードの言語の切り替え（v1.9.4）: Ctrl+Space を0.06秒で1回だけ送る。
+        // キーを押し続けても1回だけ（押している間じゅうCtrl+Spaceを出し続けると、iPadが言語の
+        // 一覧を出したり、何度も切り替えたりするおそれがあるため。Codexの9回目の指摘）
+        ipad_lang: ipad_lang {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            tap-ms = <60>;
+            bindings = <&macro_tap &kp LC(SPACE)>;
+            label = "IPAD_LANG";
         };
     };
 

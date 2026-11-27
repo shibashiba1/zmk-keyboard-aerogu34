@@ -9,6 +9,8 @@ parse_config:
     "&bt_pad2": "→ Pad2"
     "&globe_d": "音声入力"
     "&jump_tab": "Tab"
+    "&jump_dict": "音声入力"
+    "&ipad_lang": "iPad 言語"
     "&pad_full": "全画面"
     "&pad_left": "窓 左"
     "&pad_right": "窓 右"
