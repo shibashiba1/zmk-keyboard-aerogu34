@@ -2195,7 +2195,7 @@ path.combo {
 <text x="0" y="0" class="key tap">SPACE</text>
 <a href="#PadNav">
 <text x="0" y="24" class="key hold layer-activator">PadNav</text>
-</a><text x="0" y="-24" class="key shifted"><tspan style="font-size: 78%">Ctl+Alt+L</tspan></text>
+</a><text x="0" y="-24" class="key shifted"><tspan style="font-size: 64%">&amp;jump_alfr…</tspan></text>
 </g>
 <g transform="translate(448, 196)" class="key trans keypos-32">
 <rect rx="6" ry="6" x="-26" y="-26" width="52" height="52" class="key trans"/>
@@ -2218,6 +2218,12 @@ path.combo {
 <g class="combo combopos-2">
 <rect rx="6" ry="6" x="602" y="127" width="28" height="26" class="combo"/>
 <text x="616" y="140" class="combo tap">音声入力</text>
+</g>
+<g class="combo combopos-3">
+<rect rx="6" ry="6" x="658" y="127" width="28" height="26" class="combo"/>
+<text x="672" y="140" class="combo tap">
+<tspan x="672" dy="-0.6em">iPad</tspan><tspan x="672" dy="1.2em">言語</tspan>
+</text>
 </g>
 </g>
 </g>

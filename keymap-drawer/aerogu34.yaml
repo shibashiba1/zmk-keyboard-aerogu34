@@ -452,7 +452,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: Ctl+Alt+A, h: Sym}
-  - {t: SPACE, h: PadNav, s: Ctl+Alt+L}
+  - {t: SPACE, h: PadNav, s: '&jump_alfred'}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   JumpNav:
@@ -613,4 +613,10 @@ combos:
   l: [Mac, Win, And]
 - p: [27, 28]
   k: 音声入力
-  l: [Pad, Jump]
+  l: [Pad]
+- p: [27, 28]
+  k: 音声入力
+  l: [Jump]
+- p: [28, 29]
+  k: iPad 言語
+  l: [Jump]
